@@ -56,6 +56,9 @@ pip install -r requirements.txt # Install dependencies
 Creating a knowledge base is the key of this project. A knowledge base is a set of documents used to give the LLM a context to generate an answer to the request made by the user. The RAG API needs to "Retrieve" some base data to build this context for the answer.
 
 ### Knowledge base setup
+``` bash 
+python3 embed.py
+```
 
 ![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-api_t1u2v3w4)
 
@@ -75,7 +78,7 @@ The RAG API workflow is: given a received request in the question endpoint, the 
 To run the FastAPI server locally, use Uvicorn with the following command:
 
 ``` bash 
-uvicorn main:app --reload
+uvicorn app:app --reload
 ```
 
 ### API query breakdown
