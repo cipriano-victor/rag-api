@@ -16,3 +16,23 @@ def query(q: str):
     )
 
     return {"answer": answer["response"]}
+
+@app.post("/add")
+def add_knowledge(text: str):
+    """Add new content to the knowledge base dynamically."""
+    try:
+        from uuid import uuid4
+
+        doc_id = str(uuid4())        
+        collection.add(documents=[text], ids=[doc_id])
+        
+        return {
+            "status": "success",
+            "message": "Content added to knowledge base",
+            "id": doc_id
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e)
+        }
