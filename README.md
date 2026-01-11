@@ -1,5 +1,3 @@
-<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
-
 # Build a RAG API with FastAPI
 
 ![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-api_g3h4i5j6)
@@ -69,11 +67,7 @@ Embeddings are a numerical representation for text and documents that capture me
 
 ### How the RAG API works
 
-The RAG API workflow is: given a received request in the question endpoint, the app searchs throught the knowledge base using Chroma to find text that matches the question's meaning, returns the most relevant information from your documents (context) and the question and the context are sent together to tinyllama to generate an answer to send back to the one who asked.
-
-![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-api_f3g4h5i6)
-
----
+The RAG API workflow is: given a received request in the question endpoint, the app searchs throught the knowledge base using Chroma to find text that matches the question's meaning, returns the most relevant information from your documents (context) and the question and the context are sent together to tinyllama to generate an answer.
 
 ## Testing the RAG API
 
