@@ -7,11 +7,13 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 MODEL_NAME = getenv("MODEL_NAME", "tinyllama")
+OLLAMA_HOST = getenv("OLLAMA_HOST", "http://host.docker.internal:11434")
 logging.info(f"Using model: {MODEL_NAME}")
+logging.info(f"Using host: {OLLAMA_HOST}")
 
 app = FastAPI()
 collection = PersistentClient(path="./db").get_or_create_collection("docs")
-ollama_client = Client(host="http://host.docker.internal:11434")
+ollama_client = Client(host=OLLAMA_HOST)
 
 @app.get("/health")
 def health():
