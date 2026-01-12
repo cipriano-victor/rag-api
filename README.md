@@ -53,7 +53,7 @@ pip install -r requirements.txt # Install dependencies
 
 ## Setting Up a Knowledge Base
 
-Creating a knowledge base is the key of this project. A knowledge base is a set of documents used to give the LLM a context to generate an answer to the request made by the user. The RAG API needs to "Retrieve" some base data to build this context for the answer.
+Creating a [knowledge base](/k8s.txt) is the key of this project. A knowledge base is a set of documents used to give the LLM a context to generate an answer to the request made by the user. The RAG API needs to "Retrieve" some base data to build this context for the answer.
 
 ### Knowledge base setup
 ``` bash 
@@ -110,4 +110,39 @@ To access Swagger UI, with Uvicorn running your program locally, open your brows
 
 The /add endpoint allows to build a dynamic knowledge base. This is useful because it allows to accept new content through an API, store it automatically in Chroma and make it searchable immediately without manual file editing or server restarts.
 
+## Containerize a RAG API with Docker
 
+![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-docker_x7y8z9a0)
+
+It was added a way to containerize the RAG API. In this case we'll be using Docker, a tool that allows to solve the 'it-works-on-my-machine' problem by packaging the program (in this case our AI API) and everything it needs into a container that runs identically anywhere.
+
+Containerizing means building a Docker image that packages up our RAG API and all of its dependencies. In order to reach this we need a Dockerfile that will contain all the instructions for building the image.
+
+### How the Dockerfile works
+
+A [Dockerfile](/Dockerfile) is a file that contains key instructions to build a Docker image. The ones used in this project are: FROM, COPY, RUN, CMD and more. FROM pulls a base image from Docker Hub, telling Docker to start with a pre-built image with something installed (in this case a light version of Python 3.11). COPY is used to copy the application files from your computer into the container. These files become part of the image. RUN executes commands during build time. CMD defines what command runs when the container starts.
+
+### Building the Docker image
+To build the Docker image, run the following command in the terminal from the directory where the Dockerfile is located:
+
+``` bash
+docker build -t rag-api .
+```
+
+### Running the Docker container
+To run the Docker container, use the following command:
+
+``` bash
+docker run -p 8000:8000 rag-api
+```
+
+### Pulling from Docker Hub
+Pulling an image from Docker Hub means downloading an image that's been uploaded via Docker Hub. In this case you don't need to build the image locally. When we ran docker pull, Docker installs a local copy of the exact image previously uploaded. The difference between building locally and pulling from Docker Hub is that we can easily switch computers and still be able to run the containerized API.
+
+The image can be pulled from Docker Hub using the following command:
+
+``` bash
+docker pull vicdc21/rag-app
+``` 
+
+![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-docker_f5g6h7i8)
