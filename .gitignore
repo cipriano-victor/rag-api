@@ -208,3 +208,7 @@ __marimo__/
 
 # ChromaDB persistent client database
 db/
+
+# Kubernetes local config files
+kubectl
+minikube_*
