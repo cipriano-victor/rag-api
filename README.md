@@ -57,7 +57,7 @@ Creating a [knowledge base](/k8s.txt) is the key of this project. A knowledge ba
 
 ### Knowledge base setup
 ``` bash 
-python3 embed.py # Run the embedding script
+python3 embed_docs.py # Run the embedding script
 ```
 
 ![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-api_t1u2v3w4)
@@ -194,3 +194,37 @@ kubectl get services
 ``` bash
 minikube service rag-app-service --url
 ```
+
+## Scaling with Multiple Documents
+
+The embed_docs.py script handles all .txt files in the docs folder to extend the knowledge base. This structure supports growth by letting add how many .txt files you want to the knowledge base.
+
+![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-githubactions_g5h6i7j8)
+
+## Creating Semantic Tests
+
+Semantic Tests work to verify the RAG system returns answers with the right meaning, not just the right format. Unlike unit tests that check code logic, semantic tests validate also data quality. These tests ensure quality by verifying the answer includes key concepts as expected.
+
+### Non-deterministic output observation
+
+If we ran the query multiple times using the LLM, we should notice at any point there is a non-deterministic LLM behavior, so tests might pass when they should fail, or fail when they should pass, just because the LLM generated a different response. This is a problem because you can't automate these tests with non-deterministic behavior. For CI/CD to work reliably, we need a solution locally before building automation.
+
+---
+
+## Adding Mock LLM Mode
+
+We're adding mock LLM mode to test whether the right information was found, without the LLM adding variability. This solves the non-determinism problem by returning the retrieved context directly (Same query → Same retrieved document → Same response every time). Reliable testing requires a deterministic output.
+ 
+## Run the tests
+
+In a terminal, run the following command. This command sets the USE_MOCK_LLM environment variable to 1, which activates the mock LLM mode in the application. Then, it starts the FastAPI server using Uvicorn with hot-reloading enabled. We're mocking the LLM to return the retrieved context directly for deterministic testing.
+``` bash
+USE_MOCK_LLM=1 uvicorn app:app --reload
+```
+
+In another terminal, run the semantic tests with the following command:
+``` bash
+python3 semantic_test.py
+```
+
+Note: You can run the tests without the USE_MOCK_LLM variable to see the non-deterministic behavior of the LLM. However, for reliable and repeatable tests, it's recommended to use the mock mode.
