@@ -168,15 +168,17 @@ Minikube will allow us to create a single-node local-running cluster. For this d
 We need a service between the Pods and the outside world because it provides a stable networking endpoint (i.e. a stable IP address that let us connect to our API). If a service didn't exist, then we'd have to connect to the Pod that's running our containerized API (this connections breaks each time a Pod is restarted by Kubernetes) directly. The selector finds Pods by matching with a label that MUST match the Deployment's Pod labels. The port configuration allows where to send traffic (routes incoming requests to port where your RAG API is listening), how to expose it (type: NodePort) and the Service port (is the port the Service listens on internally). NodePort enables access to the service from outside the cluster.
 
 ## How to deploy the RAG API to Kubernetes
-1. Install Minikube and kubectl.
+1. Check if Minikube and kubectl are installed.
 ``` bash 
 minikube version
 kubectl version --client
 ```
+
 2. Start Minikube.
 ``` bash
 minikube start
 ```
+
 3. Apply the Kubernetes configuration files.
 ``` bash
 kubectl apply -f ollama.yaml -f rag.yaml
