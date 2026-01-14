@@ -57,7 +57,7 @@ Creating a [knowledge base](/k8s.txt) is the key of this project. A knowledge ba
 
 ### Knowledge base setup
 ``` bash 
-python3 embed.py
+python3 embed.py # Run the embedding script
 ```
 
 ![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-api_t1u2v3w4)
@@ -78,7 +78,7 @@ The RAG API workflow is: given a received request in the question endpoint, the 
 To run the FastAPI server locally, use Uvicorn with the following command:
 
 ``` bash 
-uvicorn app:app --reload
+OLLAMA_HOST='' uvicorn app:app --reload
 ```
 
 ### API query breakdown
@@ -126,14 +126,14 @@ A [Dockerfile](/Dockerfile) is a file that contains key instructions to build a 
 To build the Docker image, run the following command in the terminal from the directory where the Dockerfile is located:
 
 ``` bash
-docker build -t rag-api .
+docker build -t rag-app .
 ```
 
 ### Running the Docker container
 To run the Docker container, use the following command:
 
 ``` bash
-docker run -p 8000:8000 rag-api
+docker run -p 8000:8000 rag-app
 ```
 
 ### Pulling from Docker Hub
@@ -146,3 +146,49 @@ docker pull vicdc21/rag-app
 ``` 
 
 ![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-docker_f5g6h7i8)
+
+## Using Docker Compose
+Docker Compose is a tool that helps define and run multi-container Docker applications. In this case, we can use it to manage our RAG API container more easily. With Docker Compose, we can define our container's configuration in a single file (docker-compose.yaml) and start or stop the container with simple commands.
+
+You can start the RAG API container using Docker Compose with the following command:
+
+``` bash
+docker-compose up -d
+```
+
+By running this command, Docker Compose reads the docker-compose.yaml file, builds the image if it doesn't exist, builds also the image for the Ollama service (so you don't have to install it locally) and starts the container in detached mode (running in the background). 
+
+## Deploying RAG API to Kubernetes with Minikube
+In this step, we're installing Minikube and kubectl. We need these tools to run a local Kubernetes cluster on the computer instead of using a cloud provider or a large infrastructure, and also to talk to Kubernetes clusters via command-line to deploy applications, inspect resources, view logs, and manage your cluster from the terminal.
+
+Minikube will allow us to create a single-node local-running cluster. For this deployment, you need to load the Docker images into Minikube because Kubernetes doesn't create images by itself, Docker does this. Kubernetes manages and scales containers once they're created. Without this step, Kubernetes would not have an image for creating and running containers. RAG API simply would not be running.
+
+## Creating a Service
+
+We need a service between the Pods and the outside world because it provides a stable networking endpoint (i.e. a stable IP address that let us connect to our API). If a service didn't exist, then we'd have to connect to the Pod that's running our containerized API (this connections breaks each time a Pod is restarted by Kubernetes) directly. The selector finds Pods by matching with a label that MUST match the Deployment's Pod labels. The port configuration allows where to send traffic (routes incoming requests to port where your RAG API is listening), how to expose it (type: NodePort) and the Service port (is the port the Service listens on internally). NodePort enables access to the service from outside the cluster.
+
+## How to deploy the RAG API to Kubernetes
+1. Install Minikube and kubectl.
+``` bash 
+minikube version
+kubectl version --client
+```
+2. Start Minikube.
+``` bash
+minikube start
+```
+3. Apply the Kubernetes configuration files.
+``` bash
+kubectl apply -f ollama.yaml -f rag.yaml
+```
+
+4. Verify that the Pods and Services are running.
+``` bash
+kubectl get pods # All pods should be in Running status
+kubectl get services
+```
+
+5. Access the RAG API using Minikube's IP and the NodePort assigned to the service. This command retrieves the URL to access the RAG API service. 
+``` bash
+minikube service rag-app-service --url
+```
