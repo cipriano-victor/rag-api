@@ -7,9 +7,10 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 MODEL_NAME = getenv("MODEL_NAME", "tinyllama")
-OLLAMA_HOST = getenv("OLLAMA_HOST", "http://host.docker.internal:11434")
+OLLAMA_HOST = getenv("OLLAMA_HOST", "http://ollama:11434")
 logging.info(f"Using model: {MODEL_NAME}")
-logging.info(f"Using host: {OLLAMA_HOST}")
+if OLLAMA_HOST != '':
+    logging.info(f"Using host: {OLLAMA_HOST}")
 
 app = FastAPI()
 collection = PersistentClient(path="./db").get_or_create_collection("docs")
