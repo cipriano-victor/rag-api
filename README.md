@@ -1,4 +1,15 @@
-# Build a RAG API with FastAPI
+# Build a RAG API with FastAPI - NextWork DevOps x AI Series
+
+Credits to NextWork for the learning material and images used in this project.
+- [Part 1 - Build a RAG API with FastAPI](https://learn.nextwork.org/projects/ai-devops-api)
+- [Part 2 - Containerize a RAG API with Docker](https://learn.nextwork.org/projects/ai-devops-docker)
+- [Part 3 - Deploy a RAG API to Kubernetes](https://learn.nextwork.org/projects/ai-devops-kubernetes)
+- [Part 4 - Automate Testing with GitHub Actions](https://learn.nextwork.org/projects/ai-devops-githubactions)
+
+Added:
+- Ollama service configuration to run from a container instead of installing it locally.
+- Docker Compose file to manage the RAG API and Ollama service more easily.
+- Kubernetes configuration for Ollama service.
 
 ![Image](http://learn.nextwork.org/motivated_amber_fierce_fox/uploads/ai-devops-api_g3h4i5j6)
 
