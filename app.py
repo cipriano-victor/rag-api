@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from chromadb import PersistentClient
-from ollama import Client
 from os import getenv
 import logging
 
