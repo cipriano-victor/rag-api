@@ -5,10 +5,6 @@ import logging
 
 # Mock LLM mode for CI testing
 USE_MOCK_LLM = getenv("USE_MOCK_LLM", "0") == "1"
-
-if not USE_MOCK_LLM:
-    from ollama import Client
-
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 MODEL_NAME = getenv("MODEL_NAME", "tinyllama")
@@ -19,7 +15,9 @@ if OLLAMA_HOST != '':
 
 app = FastAPI()
 collection = PersistentClient(path="./db").get_or_create_collection("docs")
-ollama_client = Client(host=OLLAMA_HOST)
+if not USE_MOCK_LLM:
+    from ollama import Client
+    ollama_client = Client(host=OLLAMA_HOST)
 
 @app.get("/health")
 def health():
